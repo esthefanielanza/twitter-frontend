@@ -11,7 +11,6 @@ export const addUser = userData => {
     })
       .then(response => response.json())
       .then(data => {
-        console.log('data', data);
         if (!data.error) dispatch({ type: 'ADD_USER_SUCCESS', payload: data });
         else dispatch({ type: 'ADD_USER_FAILURE', error: data.description });
       })
