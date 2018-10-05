@@ -1,0 +1,52 @@
+#app {
+  height: 100%;
+}
+
+.full-height {
+  height: 100%;
+}
+
+label {
+  display: inherit;
+  font-size: 16px;
+  text-transform: uppercase;
+  text-align: left;
+}
+
+textarea,
+input {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 1px solid white;
+
+  &:focus {
+    border: none;
+    outline: 0;
+    border-bottom: 1px solid blue;
+  }
+}
+
+.p-0 {
+  padding: 0;
+}
+
+.p-2 {
+  padding: 2rem;
+}
+
+button {
+  margin-top: 1em;
+  padding: 0.5em;
+  font-size: 12px;
+  border-radius: 6px;
+  background-color: transparent;
+  border: 2px solid white;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    color: blue;
+    border: 2px solid blue;
+  }
+}

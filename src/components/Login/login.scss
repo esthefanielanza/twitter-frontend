@@ -1,0 +1,13 @@
+.login {
+  &__icon {
+    height: 80px;
+    margin-bottom: 1rem;
+  }
+
+  &__user-data {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

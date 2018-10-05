@@ -1,0 +1,25 @@
+.register {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  &__form {
+    margin-top: 2rem;
+
+    textarea,
+    input {
+      margin-bottom: 2rem;
+      width: 60%;
+      border-bottom: 1px solid #1da1f2;
+    }
+
+    textarea {
+      min-height: 80px;
+    }
+  }
+}
