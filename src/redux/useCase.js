@@ -1,11 +1,20 @@
 export const addUser = userData => {
   return dispatch => {
     dispatch({ type: 'ADD_USER' });
-    console.log('ADDING USER', userData);
-    //should do a fetch call here
-    // dispatch success if ok
-    dispatch({ type: 'ADD_USER_SUCCESS' });
-    // dispatch failure for errors
-    // dispatch({ type: 'ADD_USER_FAILURE', error: 'Um erro ocorreu!' });
+    fetch('https://twitter-eng2-users.herokuapp.com/', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('data', data);
+        if (!data.error) dispatch({ type: 'ADD_USER_SUCCESS', payload: data });
+        else dispatch({ type: 'ADD_USER_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'ADD_USER_FAILURE', error: 'Um erro inesperado ocorreu!' }));
   };
 };
