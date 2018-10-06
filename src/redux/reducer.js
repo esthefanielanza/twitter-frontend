@@ -35,6 +35,15 @@ function dataReducer(state = initialState, action) {
       return objectUpdate(state, { loggedUser: action.user, loginError: false });
     case 'LOGIN_FAILURE':
       return objectUpdate(state, { loginError: action.error });
+    case 'LOGOUT':
+      return objectUpdate(state, { loggedUser: undefined });
+    // DELETE_USER //
+    case 'DELETE_USER':
+      return objectUpdate(state, { deleting: true, error: undefined });
+    case 'DELETE_USER_SUCCESS':
+      return objectUpdate(state, { deleting: false });
+    case 'DELETE_USER_FAILURE':
+      return objectUpdate(state, { deleting: false, deleteError: action.error });
     default:
       return state;
   }

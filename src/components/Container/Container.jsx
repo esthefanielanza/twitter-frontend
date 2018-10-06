@@ -10,7 +10,7 @@ import Reducers from '../../redux/reducer';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import Dashboard from '../Dashboard/Dashboard';
-import { getUsers, login, addUser } from '../../redux/useCase';
+import { getUsers, login, addUser, deleteUser } from '../../redux/useCase';
 
 import './container.scss';
 
@@ -30,7 +30,18 @@ class Container extends Component {
   }
 
   render() {
-    const { users, loginError, login, addedUser, addUserError, addingUser, addUser, loggedUser } = this.props;
+    const {
+      users,
+      loginError,
+      login,
+      addedUser,
+      addUserError,
+      addingUser,
+      addUser,
+      loggedUser,
+      logout,
+      deleteUser
+    } = this.props;
     console.log('logged user', loggedUser);
     return (
       <Provider store={store}>
@@ -41,7 +52,11 @@ class Container extends Component {
                 <section className={`${CN}__header`}>
                   <h1 className={`${CN}__header__title`}> TWITTER LIGHT </h1>
                 </section>
-                {loggedUser ? <Profile user={loggedUser} /> : <Login users={users} error={loginError} login={login} />}
+                {loggedUser ? (
+                  <Profile user={loggedUser} logout={logout} deleteUser={() => deleteUser(loggedUser.id)} />
+                ) : (
+                  <Login users={users} error={loginError} login={login} />
+                )}
               </div>
             </Col>
             <Col xs={12} md={6}>
@@ -77,7 +92,9 @@ const mapStateToProps = ({ data }) => ({
 const mapDispatchToProps = dispatch => ({
   getUsers: () => dispatch(getUsers()),
   login: (username, users) => dispatch(login(username, users)),
-  addUser: userData => dispatch(addUser(userData))
+  addUser: userData => dispatch(addUser(userData)),
+  logout: () => dispatch({ type: 'LOGOUT' }),
+  deleteUser: id => dispatch(deleteUser(id))
 });
 
 export default connect(

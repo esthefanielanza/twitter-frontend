@@ -44,3 +44,20 @@ export const login = (username = '', users) => {
     else dispatch({ type: 'LOGIN_FAILURE', error: 'Usuário não existe' });
   };
 };
+
+export const deleteUser = id => {
+  return dispatch => {
+    dispatch({ type: 'DELETE_USER' });
+    fetch(`https://twitter-eng2-users.herokuapp.com/${id}`, {
+      method: 'DELETE'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'LOGOUT' });
+          dispatch({ type: 'DELETE_USER_SUCCESS' });
+        } else dispatch({ type: 'DELETE_USER_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'DELETE_USER_FAILURE', error: 'Um erro inesperado ocorreu!' }));
+  };
+};
