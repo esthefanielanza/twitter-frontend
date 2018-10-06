@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AppComponent from './components/AppComponent/AppComponent';
+import App from './app';
 
 import './index.scss';
 
-ReactDOM.render(<AppComponent />, document.getElementById('app'));
+ReactDOM.render(<App />, document.getElementById('app'));
 
 module.hot.accept();

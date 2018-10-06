@@ -1,7 +1,5 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
 
-import { addUser } from '../../redux/useCase';
 import './register.scss';
 
 const CN = 'register';
@@ -62,19 +60,4 @@ class Register extends PureComponent {
   }
 }
 
-const mapStateToProps = ({ data }) => {
-  return {
-    addingUser: data.addingUser,
-    addedUser: data.addedUser,
-    error: data.addUserError
-  };
-};
-
-const mapDispatchToProps = dispatch => ({
-  addUser: userData => dispatch(addUser(userData))
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Register);
+export default Register;
