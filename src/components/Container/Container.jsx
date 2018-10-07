@@ -10,6 +10,7 @@ import Reducers from '../../redux/reducer';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import Dashboard from '../Dashboard/Dashboard';
+import Tweet from '../Tweet/Tweet';
 import { getUsers, login, addUser, deleteUser } from '../../redux/useCase';
 
 import './container.scss';

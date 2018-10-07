@@ -28,7 +28,7 @@ body {
 
     &__tweets {
       font-size: 24px;
-      padding: 4em;
+      padding: 2em;
     }
   }
 
@@ -99,4 +99,15 @@ p {
   background-color: red;
   border: 1px solid red;
   margin-right: 0.5rem;
+}
+
+.btn-success {
+  color: white;
+  background-color: green;
+  border: 1px solid green;
+  margin-right: 0.5rem;
+  &:hover{
+    color: greenyellow;
+    border: 2px solid greenyellow;
+  }
 }
