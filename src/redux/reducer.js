@@ -44,6 +44,13 @@ function dataReducer(state = initialState, action) {
       return objectUpdate(state, { deleting: false });
     case 'DELETE_USER_FAILURE':
       return objectUpdate(state, { deleting: false, deleteError: action.error });
+    // FOLLOW_USER //
+    case 'FOLLOW_USER':
+      return objectUpdate(state, { following: true, error: undefined });
+    case 'FOLLOW_USER_SUCCESS':
+      return objectUpdate(state, { followedUser: true, following: false });
+    case 'FOLLOW_USER_FAILURE':
+      return objectUpdate(state, { following: false, deleteError: action.error });
     default:
       return state;
   }

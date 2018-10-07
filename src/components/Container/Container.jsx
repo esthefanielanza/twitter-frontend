@@ -11,7 +11,7 @@ import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import Dashboard from '../Dashboard/Dashboard';
 import Tweet from '../Tweet/Tweet';
-import { getUsers, login, addUser, deleteUser } from '../../redux/useCase';
+import { getUsers, login, addUser, deleteUser, followUser } from '../../redux/useCase';
 
 import './container.scss';
 
@@ -41,7 +41,9 @@ class Container extends Component {
       addUser,
       loggedUser,
       logout,
-      deleteUser
+      deleteUser,
+      followUser,
+      followedUser
     } = this.props;
     console.log('logged user', loggedUser);
     return (
@@ -63,7 +65,7 @@ class Container extends Component {
             <Col xs={12} md={6}>
               <div className={`${CN}__container ${CN}__container__tweets`}>
                 {loggedUser ? (
-                  <Dashboard />
+                  <Dashboard followedUser={followedUser} followUser={followUser}/>
                 ) : (
                   <Register
                     addingUser={addingUser}
@@ -87,7 +89,8 @@ const mapStateToProps = ({ data }) => ({
   addingUser: data.addingUser,
   addedUser: data.addedUser,
   addUserError: data.addUserError,
-  loggedUser: data.loggedUser
+  loggedUser: data.loggedUser,
+  followedUser: data.followedUser
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -95,7 +98,8 @@ const mapDispatchToProps = dispatch => ({
   login: (username, users) => dispatch(login(username, users)),
   addUser: userData => dispatch(addUser(userData)),
   logout: () => dispatch({ type: 'LOGOUT' }),
-  deleteUser: id => dispatch(deleteUser(id))
+  deleteUser: id => dispatch(deleteUser(id)),
+  followUser: id => dispatch(followUser(id))
 });
 
 export default connect(

@@ -61,3 +61,19 @@ export const deleteUser = id => {
       .catch(error => dispatch({ type: 'DELETE_USER_FAILURE', error: 'Um erro inesperado ocorreu!' }));
   };
 };
+
+export const followUser = id => {
+  return dispatch => {
+    dispatch({ type: 'FOLLOW_USER' });
+    fetch(`https://twitter-eng2-users.herokuapp.com/${id}/follow`, {
+      method: 'PUT'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'FOLLOW_USER_SUCCESS' });
+        } else dispatch({ type: 'FOLLOW_USER_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'FOLLOW_USER_FAILURE', error: 'Um erro inesperado ocorreu!' }));
+  };
+};
