@@ -11,7 +11,15 @@ import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import Dashboard from '../Dashboard/Dashboard';
 import Tweet from '../Tweet/Tweet';
-import { getUsers, login, addUser, deleteUser, followUser } from '../../redux/useCase';
+import {
+  getUsers,
+  login,
+  addUser,
+  deleteUser,
+  followUser,
+  createMessage,
+  getDashboardMessages
+} from '../../redux/useCase';
 
 import './container.scss';
 
@@ -43,7 +51,12 @@ class Container extends Component {
       logout,
       deleteUser,
       followUser,
-      followedUser
+      followedUser,
+      createMessage,
+      messages,
+      dashboardError,
+      loadingDashboard,
+      getDashboardMessages
     } = this.props;
     console.log('logged user', loggedUser);
     return (
@@ -56,7 +69,12 @@ class Container extends Component {
                   <h1 className={`${CN}__header__title`}> TWITTER LIGHT </h1>
                 </section>
                 {loggedUser ? (
-                  <Profile user={loggedUser} logout={logout} deleteUser={() => deleteUser(loggedUser.id)} />
+                  <Profile
+                    user={loggedUser}
+                    logout={logout}
+                    deleteUser={() => deleteUser(loggedUser.id)}
+                    createMessage={createMessage}
+                  />
                 ) : (
                   <Login users={users} error={loginError} login={login} />
                 )}
@@ -65,7 +83,15 @@ class Container extends Component {
             <Col xs={12} md={6}>
               <div className={`${CN}__container ${CN}__container__tweets`}>
                 {loggedUser ? (
-                  <Dashboard followedUser={followedUser} followUser={followUser}/>
+                  <Dashboard
+                    messages={messages}
+                    error={dashboardError}
+                    loading={loadingDashboard}
+                    getDashboardMessages={getDashboardMessages}
+                    users={users}
+                    followedUser={followedUser}
+                    followUser={followUser}
+                  />
                 ) : (
                   <Register
                     addingUser={addingUser}
@@ -90,7 +116,10 @@ const mapStateToProps = ({ data }) => ({
   addedUser: data.addedUser,
   addUserError: data.addUserError,
   loggedUser: data.loggedUser,
-  followedUser: data.followedUser
+  followedUser: data.followedUser,
+  loadingDashboard: data.loadingDashboard,
+  messages: data.messages,
+  dashboardError: data.dashboardError
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -99,7 +128,9 @@ const mapDispatchToProps = dispatch => ({
   addUser: userData => dispatch(addUser(userData)),
   logout: () => dispatch({ type: 'LOGOUT' }),
   deleteUser: id => dispatch(deleteUser(id)),
-  followUser: id => dispatch(followUser(id))
+  followUser: id => dispatch(followUser(id)),
+  createMessage: (id, message) => dispatch(createMessage(id, message)),
+  getDashboardMessages: () => dispatch(getDashboardMessages())
 });
 
 export default connect(

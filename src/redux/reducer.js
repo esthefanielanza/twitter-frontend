@@ -51,6 +51,13 @@ function dataReducer(state = initialState, action) {
       return objectUpdate(state, { followedUser: true, following: false });
     case 'FOLLOW_USER_FAILURE':
       return objectUpdate(state, { following: false, deleteError: action.error });
+    // GET_DASHBOARD //
+    case 'GET_DASHBOARD':
+      return objectUpdate(state, { loadingDashboard: true, messages: [], dashboardError: false });
+    case 'GET_DASHBOARD_SUCCESS':
+      return objectUpdate(state, { loadingDashboard: false, messages: action.payload });
+    case 'GET_DASHBOARD_FAILURE':
+      return objectUpdate(state, { loadingDashboard: false, messages: [], dashboardError: action.error });
     default:
       return state;
   }

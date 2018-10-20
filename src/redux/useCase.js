@@ -77,3 +77,42 @@ export const followUser = id => {
       .catch(error => dispatch({ type: 'FOLLOW_USER_FAILURE', error: 'Um erro inesperado ocorreu!' }));
   };
 };
+
+export const createMessage = (user_id, message) => {
+  return dispatch => {
+    dispatch({ type: 'CREATE_MESSAGE' });
+    fetch(`https://messages-twitter.herokuapp.com/?user_id=${user_id}&message=${message}`, {
+      method: 'POST',
+      body: {
+        user_id,
+        message
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'CREATE_MESSAGE_SUCCESS' });
+          dispatch(getDashboardMessages());
+        } else dispatch({ type: 'CREATE_MESSAGE_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'CREATE_MESSAGE_FAILURE', error: 'Um erro inesperado ocorreu!' }));
+  };
+};
+
+export const getDashboardMessages = () => {
+  return dispatch => {
+    dispatch({ type: 'GET_DASHBOARD' });
+    fetch('https://messages-twitter.herokuapp.com/', {
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'GET_DASHBOARD_SUCCESS', payload: data.messages });
+        } else dispatch({ type: 'GET_DASHBOARD_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'GET_DASHBOARD_FAILURE', error: 'Um erro inesperado ocorreu!', a: error }));
+  };
+};
+
+//

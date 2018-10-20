@@ -3,13 +3,12 @@ import React, { Component } from 'react';
 const CN = 'profile';
 
 import './profile.scss';
-import { deleteUser } from '../../redux/useCase';
 
 class Profile extends Component {
   state = { tweet: undefined };
 
   render() {
-    const { user, logout, deleteUser } = this.props;
+    const { user, logout, deleteUser, createMessage } = this.props;
     return (
       <div className={`profile ${CN}__user-data`}>
         <h1>{user.full_name}</h1>
@@ -23,9 +22,20 @@ class Profile extends Component {
           </button>
           <button onClick={logout}> Logout </button>
         </div>
-        <textarea placeholder="O que está acontecendo?" onChange={e => this.setState({ tweet: e.target.value })} />
+        <textarea
+          placeholder="O que está acontecendo?"
+          value={this.state.tweet}
+          onChange={e => this.setState({ tweet: e.target.value })}
+        />
         <div className="text-right">
-          <button onClick={() => console.log('Should create a message here')}> Tweet </button>
+          <button
+            onClick={() => {
+              createMessage(user.id, this.state.tweet);
+              this.setState({ tweet: '' });
+            }}
+          >
+            Tweet
+          </button>
         </div>
       </div>
     );
