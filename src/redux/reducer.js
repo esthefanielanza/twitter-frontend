@@ -46,11 +46,11 @@ function dataReducer(state = initialState, action) {
       return objectUpdate(state, { deleting: false, deleteError: action.error });
     // FOLLOW_USER //
     case 'FOLLOW_USER':
-      return objectUpdate(state, { following: true, error: undefined });
+      return objectUpdate(state, { following: true, error: undefined, followedUser: undefined });
     case 'FOLLOW_USER_SUCCESS':
-      return objectUpdate(state, { followedUser: true, following: false });
+      return objectUpdate(state, { followedUser: action.id, following: false });
     case 'FOLLOW_USER_FAILURE':
-      return objectUpdate(state, { following: false, deleteError: action.error });
+      return objectUpdate(state, { following: false, followError: action.error, followedUser: undefined });
     // GET_DASHBOARD //
     case 'GET_DASHBOARD':
       return objectUpdate(state, { loadingDashboard: true, messages: [], dashboardError: false });

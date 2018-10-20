@@ -18,7 +18,8 @@ import {
   deleteUser,
   followUser,
   createMessage,
-  getDashboardMessages
+  getDashboardMessages,
+  unfollowUser
 } from '../../redux/useCase';
 
 import './container.scss';
@@ -56,9 +57,10 @@ class Container extends Component {
       messages,
       dashboardError,
       loadingDashboard,
-      getDashboardMessages
+      getDashboardMessages,
+      loadingUsers,
+      unfollowUser
     } = this.props;
-    console.log('logged user', loggedUser);
     return (
       <Provider store={store}>
         <Grid className="full-height p-0" fluid>
@@ -86,11 +88,14 @@ class Container extends Component {
                   <Dashboard
                     messages={messages}
                     error={dashboardError}
-                    loading={loadingDashboard}
+                    loading={loadingDashboard || loadingUsers}
                     getDashboardMessages={getDashboardMessages}
                     users={users}
                     followedUser={followedUser}
+                    unfollowUser={unfollowUser}
+                    following={loggedUser.following}
                     followUser={followUser}
+                    loggedUserId={loggedUser.id}
                   />
                 ) : (
                   <Register
@@ -112,6 +117,7 @@ class Container extends Component {
 const mapStateToProps = ({ data }) => ({
   users: data.users,
   loginError: data.loginError,
+  loadingUsers: data.loading || data.following,
   addingUser: data.addingUser,
   addedUser: data.addedUser,
   addUserError: data.addUserError,
@@ -128,7 +134,8 @@ const mapDispatchToProps = dispatch => ({
   addUser: userData => dispatch(addUser(userData)),
   logout: () => dispatch({ type: 'LOGOUT' }),
   deleteUser: id => dispatch(deleteUser(id)),
-  followUser: id => dispatch(followUser(id)),
+  followUser: (id, idUserToFollow) => dispatch(followUser(id, idUserToFollow)),
+  unfollowUser: (id, idUserToUnfollow) => dispatch(unfollowUser(id, idUserToUnfollow)),
   createMessage: (id, message) => dispatch(createMessage(id, message)),
   getDashboardMessages: () => dispatch(getDashboardMessages())
 });

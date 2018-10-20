@@ -12,18 +12,29 @@ class Dashboard extends Component {
   }
 
   renderContent(loading, error, messages) {
-    const { users, followedUser, followUser } = this.props;
+    const { users, followUser, loggedUserId, following, unfollowUser } = this.props;
     if (loading) {
       return <div>Loading ...</div>;
-    } else if (messages) {
-      return messages.reverse().map(message => {
-        const user = users.filter(user => {
-          return user.id === message.user_id;
-        })[0];
-        return (
-          <Tweet key={message.id} user={user} message={message} followedUser={followedUser} followUser={followUser} />
-        );
-      });
+    } else if (messages.length > 0) {
+      return messages
+        .sort((a, b) => a.user_id - b.user_id)
+        .reverse()
+        .map(message => {
+          const user = users.filter(user => {
+            return user.id === message.user_id;
+          })[0];
+          return (
+            <Tweet
+              key={message.id}
+              user={user}
+              message={message}
+              followUser={followUser}
+              unfollowUser={unfollowUser}
+              following={following}
+              loggedUserId={loggedUserId}
+            />
+          );
+        });
     } else {
       return <div>{error || 'Um erro ocorreu!'}</div>;
     }

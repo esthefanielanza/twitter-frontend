@@ -20,7 +20,7 @@ export const addUser = userData => {
   };
 };
 
-export const getUsers = () => {
+export const getUsers = id => {
   return dispatch => {
     dispatch({ type: 'GET_ALL_USERS' });
     fetch('https://twitter-eng2-users.herokuapp.com/', {
@@ -29,7 +29,12 @@ export const getUsers = () => {
       .then(response => response.json())
       .then(data => {
         if (!data.error) dispatch({ type: 'GET_ALL_USERS_SUCCESS', payload: data.users });
-        else dispatch({ type: 'GET_ALL_USERS_FAILURE', error: data.description });
+        if (id) {
+          const loggedUser = data.users.filter(user => {
+            return id === user.id;
+          })[0];
+          dispatch({ type: 'LOGIN_SUCCESS', user: loggedUser });
+        } else dispatch({ type: 'GET_ALL_USERS_FAILURE', error: data.description });
       })
       .catch(error => dispatch({ type: 'GET_ALL_USERS_FAILURE', error: 'Um erro inesperado ocorreu!' }));
   };
@@ -62,19 +67,55 @@ export const deleteUser = id => {
   };
 };
 
-export const followUser = id => {
+export const followUser = (id, followUser) => {
   return dispatch => {
     dispatch({ type: 'FOLLOW_USER' });
     fetch(`https://twitter-eng2-users.herokuapp.com/${id}/follow`, {
-      method: 'PUT'
+      method: 'PUT',
+      body: JSON.stringify({
+        follow_user: followUser
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
-      .then(response => response.json())
+      .then(response => {
+        console.log(response);
+        return response.status !== 204 ? response.json() : {};
+      })
       .then(data => {
         if (!data.error) {
-          dispatch({ type: 'FOLLOW_USER_SUCCESS' });
+          dispatch({ type: 'FOLLOW_USER_SUCCESS', id: followUser });
+          dispatch(getUsers(id));
         } else dispatch({ type: 'FOLLOW_USER_FAILURE', error: data.description });
       })
-      .catch(error => dispatch({ type: 'FOLLOW_USER_FAILURE', error: 'Um erro inesperado ocorreu!' }));
+      .catch(error => dispatch({ type: 'FOLLOW_USER_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
+  };
+};
+
+export const unfollowUser = (id, unfollowUser) => {
+  return dispatch => {
+    dispatch({ type: 'FOLLOW_USER' });
+    fetch(`https://twitter-eng2-users.herokuapp.com/${id}/unfollow`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        unfollow_user: unfollowUser
+      }),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        console.log(response);
+        return response.status !== 204 ? response.json() : {};
+      })
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'FOLLOW_USER_SUCCESS', id: followUser });
+          dispatch(getUsers(id));
+        } else dispatch({ type: 'FOLLOW_USER_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'FOLLOW_USER_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
   };
 };
 
@@ -111,7 +152,7 @@ export const getDashboardMessages = () => {
           dispatch({ type: 'GET_DASHBOARD_SUCCESS', payload: data.messages });
         } else dispatch({ type: 'GET_DASHBOARD_FAILURE', error: data.description });
       })
-      .catch(error => dispatch({ type: 'GET_DASHBOARD_FAILURE', error: 'Um erro inesperado ocorreu!', a: error }));
+      .catch(error => dispatch({ type: 'GET_DASHBOARD_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
   };
 };
 
