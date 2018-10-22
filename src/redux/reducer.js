@@ -2,6 +2,8 @@ import { combineReducers } from 'redux';
 
 const initialState = {
   messages: [],
+  friendsMessages:[],
+  profileMessages: [],
   users: [],
   loading: false,
   addingUser: false

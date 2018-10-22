@@ -64,6 +64,8 @@ class Container extends Component {
       friendsError,
       loadingDashboard,
       getDashboardMessages,
+      getProfileMessages,
+      getFriendsMessages,
       loadingUsers,
       unfollowUser,
       loadingFriends,
@@ -97,8 +99,12 @@ class Container extends Component {
                     messages={messages}
                     friendsMessages={friendsMessages}
                     profileMessages={profileMessages}
-                    error={dashboardError || friendsError || profileError}
-                    loading={loadingDashboard || loadingUsers || loadingFriends || loadingProfile }
+                    error={dashboardError}
+                    profileError={profileError}
+                    friendsError={friendsError}
+                    loading={loadingDashboard || loadingUsers}
+                    loadingFriends={loadingFriends || loadingUsers}
+                    loadingProfile={loadingProfile || loadingUsers}
                     getDashboardMessages={getDashboardMessages}
                     getFriendsMessages={getFriendsMessages}
                     getProfileMessages={getProfileMessages}
@@ -154,8 +160,8 @@ const mapDispatchToProps = dispatch => ({
   unfollowUser: (id, idUserToUnfollow) => dispatch(unfollowUser(id, idUserToUnfollow)),
   createMessage: (id, message) => dispatch(createMessage(id, message)),
   getDashboardMessages: () => dispatch(getDashboardMessages()),
-  getFriendsMessages: () => dispatch(getFriendsMessages(id)),
-  getProfileMessages: ()=> dispatch(getProfileMessages(id))
+  getFriendsMessages: (id) => dispatch(getFriendsMessages(id)),
+  getProfileMessages: (id)=> dispatch(getProfileMessages(id))
 });
 
 export default connect(

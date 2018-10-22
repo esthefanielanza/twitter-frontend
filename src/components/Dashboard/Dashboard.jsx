@@ -9,21 +9,20 @@ import './dashboard.scss';
 
 class Dashboard extends Component {
   componentDidMount() {
-    const { getDashboardMessages } = this.props;
+    const { loggedUserId, getDashboardMessages, getProfileMessages, getFriendsMessages} = this.props;
     getDashboardMessages();
+    getProfileMessages(loggedUserId);
+    getFriendsMessages(loggedUserId);
   }
 
   renderProfileContent(loading, error, messages) {
     const { users, followUser, loggedUserId, following, unfollowUser } = this.props;
     if (loading) {
       return <div>Loading ...</div>;
-    } else if (messages.length > 0) {
-      return messages
-        .sort((a, b) => a.user_id - b.user_id)
-        .reverse()
-        .map(message => {
+    } else if (messages.length > 0) {      
+      return messages.map(message => {
           const user = users.filter(user => {
-            return user.id === message.user_id;
+            return message.id == user.id;
           })[0];
           return (
             <Tweet
@@ -49,7 +48,7 @@ class Dashboard extends Component {
     } else if (messages.length > 0) {
       return messages.map(message => {
           const user = users.filter(user => {
-            return user.id === message.user_id;
+            return message.id == user.id;
           })[0];
           return (
             <Tweet
@@ -98,7 +97,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { messages, loading, error } = this.props;
+    const { messages, loading, error, loadingFriends, friendsError, friendsMessages, loadingProfile, profileError, profileMessages } = this.props;
     console.log(messages);
     return (
       <div>
@@ -113,10 +112,10 @@ class Dashboard extends Component {
             <h2>{this.renderDashboardContent(loading, error, messages)}</h2>
           </TabPanel>
           <TabPanel>
-            <h2>{this.renderFriendsContent(friends_loading, friends_error, friends_messages)}</h2>
+            <h2>{this.renderFriendsContent(loadingFriends, friendsError, friendsMessages)}</h2>
           </TabPanel>
           <TabPanel>
-            {/* <h2>{this.renderProfileContent(profile_loading, profile_error, profile_messages)}</h2> */}
+            <h2>{this.renderProfileContent(loadingProfile, profileError, profileMessages)}</h2>
           </TabPanel>
         </Tabs>
       </div>

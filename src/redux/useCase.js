@@ -134,6 +134,8 @@ export const createMessage = (user_id, message) => {
         if (!data.error) {
           dispatch({ type: 'CREATE_MESSAGE_SUCCESS' });
           dispatch(getDashboardMessages());
+          dispatch(getProfileMessages(user_id));
+          dispatch(getFriendsMessages(user_id));
         } else dispatch({ type: 'CREATE_MESSAGE_FAILURE', error: data.description });
       })
       .catch(error => dispatch({ type: 'CREATE_MESSAGE_FAILURE', error: 'Um erro inesperado ocorreu!' }));
@@ -165,7 +167,7 @@ export const getProfileMessages = id => {
       .then(response => response.json())
       .then(data => {
         if (!data.error) {
-          dispatch({ type: 'GET_PROFILE_SUCCESS', payload: data.profileMessages });
+          dispatch({ type: 'GET_PROFILE_SUCCESS', payload: data.messages });
         } else dispatch({ type: 'GET_PROFILE_FAILURE', error: data.description });
       })
       .catch(error => dispatch({ type: 'GET_PROFILE_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
@@ -174,17 +176,17 @@ export const getProfileMessages = id => {
 
 export const getFriendsMessages = id => {
   return dispatch => {
-    dispatch({ type: 'GET_PROFILE' });
+    dispatch({ type: 'GET_FRIENDS' });
     fetch(`https://microservice-twitter-timeline.herokuapp.com/${id}/home`, {
       method: 'GET'
     })
       .then(response => response.json())
       .then(data => {
         if (!data.error) {
-          dispatch({ type: 'GET_PROFILE_SUCCESS', payload: data.friendsMessages });
-        } else dispatch({ type: 'GET_PROFILE_FAILURE', error: data.description });
+          dispatch({ type: 'GET_FRIENDS_SUCCESS', payload: data.messages });
+        } else dispatch({ type: 'GET_FRIENDS_FAILURE', error: data.description });
       })
-      .catch(error => dispatch({ type: 'GET_PROFILE_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
+      .catch(error => dispatch({ type: 'GET_FRIENDS_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
   };
 };
 
