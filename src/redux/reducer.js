@@ -58,6 +58,20 @@ function dataReducer(state = initialState, action) {
       return objectUpdate(state, { loadingDashboard: false, messages: action.payload });
     case 'GET_DASHBOARD_FAILURE':
       return objectUpdate(state, { loadingDashboard: false, messages: [], dashboardError: action.error });
+    // GET_FRIENDS //
+    case 'GET_FRIENDS':
+      return objectUpdate(state, { loadingFriends: true, friendsMessages: [], friendsError: false });
+    case 'GET_FRIENDS_SUCCESS':
+      return objectUpdate(state, { loadingFriends: false, friendsMessages: action.payload });
+    case 'GET_FRIENDS_FAILURE':
+      return objectUpdate(state, { loadingFriends: false, friendsMessages: [], friendsError: action.error });
+    // GET_PROFILE //
+    case 'GET_PROFILE':
+      return objectUpdate(state, { loadingProfile: true, profileMessages: [], profileError: false });
+    case 'GET_PROFILE_SUCCESS':
+      return objectUpdate(state, { loadingProfile: false, profileMessages: action.payload });
+    case 'GET_PROFILE_FAILURE':
+      return objectUpdate(state, { loadingProfile: false, profileMessages: [], profileError: action.error });
     default:
       return state;
   }

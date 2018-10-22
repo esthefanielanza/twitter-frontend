@@ -156,4 +156,36 @@ export const getDashboardMessages = () => {
   };
 };
 
+export const getProfileMessages = id => {
+  return dispatch => {
+    dispatch({ type: 'GET_PROFILE' });
+    fetch(`https://microservice-twitter-timeline.herokuapp.com/${id}/post`, {
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'GET_PROFILE_SUCCESS', payload: data.profileMessages });
+        } else dispatch({ type: 'GET_PROFILE_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'GET_PROFILE_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
+  };
+};
+
+export const getFriendsMessages = id => {
+  return dispatch => {
+    dispatch({ type: 'GET_PROFILE' });
+    fetch(`https://microservice-twitter-timeline.herokuapp.com/${id}/home`, {
+      method: 'GET'
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (!data.error) {
+          dispatch({ type: 'GET_PROFILE_SUCCESS', payload: data.friendsMessages });
+        } else dispatch({ type: 'GET_PROFILE_FAILURE', error: data.description });
+      })
+      .catch(error => dispatch({ type: 'GET_PROFILE_FAILURE', error: 'Um erro inesperado ocorreu!', e: error }));
+  };
+};
+
 //

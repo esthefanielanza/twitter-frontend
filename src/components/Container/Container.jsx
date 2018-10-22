@@ -19,6 +19,8 @@ import {
   followUser,
   createMessage,
   getDashboardMessages,
+  getProfileMessages,
+  getFriendsMessages,
   unfollowUser
 } from '../../redux/useCase';
 
@@ -55,11 +57,17 @@ class Container extends Component {
       followedUser,
       createMessage,
       messages,
+      friendsMessages,
+      profileMessages,
       dashboardError,
+      profileError,
+      friendsError,
       loadingDashboard,
       getDashboardMessages,
       loadingUsers,
-      unfollowUser
+      unfollowUser,
+      loadingFriends,
+      loadingProfile,
     } = this.props;
     return (
       <Provider store={store}>
@@ -87,9 +95,13 @@ class Container extends Component {
                 {loggedUser ? (
                   <Dashboard
                     messages={messages}
-                    error={dashboardError}
-                    loading={loadingDashboard || loadingUsers}
+                    friendsMessages={friendsMessages}
+                    profileMessages={profileMessages}
+                    error={dashboardError || friendsError || profileError}
+                    loading={loadingDashboard || loadingUsers || loadingFriends || loadingProfile }
                     getDashboardMessages={getDashboardMessages}
+                    getFriendsMessages={getFriendsMessages}
+                    getProfileMessages={getProfileMessages}
                     users={users}
                     followedUser={followedUser}
                     unfollowUser={unfollowUser}
@@ -124,8 +136,12 @@ const mapStateToProps = ({ data }) => ({
   loggedUser: data.loggedUser,
   followedUser: data.followedUser,
   loadingDashboard: data.loadingDashboard,
+  friendsMessages: data.friendsMessages,
+  profileMessages: data.profileMessages,
   messages: data.messages,
-  dashboardError: data.dashboardError
+  dashboardError: data.dashboardError,
+  friendsError: data.friendsError,
+  profileError: data.profileError
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -137,7 +153,9 @@ const mapDispatchToProps = dispatch => ({
   followUser: (id, idUserToFollow) => dispatch(followUser(id, idUserToFollow)),
   unfollowUser: (id, idUserToUnfollow) => dispatch(unfollowUser(id, idUserToUnfollow)),
   createMessage: (id, message) => dispatch(createMessage(id, message)),
-  getDashboardMessages: () => dispatch(getDashboardMessages())
+  getDashboardMessages: () => dispatch(getDashboardMessages()),
+  getFriendsMessages: () => dispatch(getFriendsMessages(id)),
+  getProfileMessages: ()=> dispatch(getProfileMessages(id))
 });
 
 export default connect(
