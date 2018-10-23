@@ -2,40 +2,37 @@ import React, { Component } from 'react';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import Tweet from '../Tweet/Tweet';
 
-
 const CN = 'dashboard';
 
 import './dashboard.scss';
 
 class Dashboard extends Component {
   componentDidMount() {
-    const { loggedUserId, getDashboardMessages, getProfileMessages, getFriendsMessages} = this.props;
+    const { getDashboardMessages } = this.props;
     getDashboardMessages();
-    getProfileMessages(loggedUserId);
-    getFriendsMessages(loggedUserId);
   }
 
   renderProfileContent(loading, error, messages) {
     const { users, followUser, loggedUserId, following, unfollowUser } = this.props;
     if (loading) {
       return <div>Loading ...</div>;
-    } else if (messages.length > 0) {      
+    } else if (messages.length > 0) {
       return messages.map(message => {
-          const user = users.filter(user => {
-            return message.id == user.id;
-          })[0];
-          return (
-            <Tweet
-              key={message.id}
-              user={user}
-              message={message}
-              followUser={followUser}
-              unfollowUser={unfollowUser}
-              following={following}
-              loggedUserId={loggedUserId}
-            />
-          );
-        });
+        const user = users.filter(user => {
+          return message.id == user.id;
+        })[0];
+        return (
+          <Tweet
+            key={message.id}
+            user={user}
+            message={message}
+            followUser={followUser}
+            unfollowUser={unfollowUser}
+            following={following}
+            loggedUserId={loggedUserId}
+          />
+        );
+      });
     } else {
       return <div>{error || 'Um erro ocorreu!'}</div>;
     }
@@ -47,23 +44,23 @@ class Dashboard extends Component {
       return <div>Loading ...</div>;
     } else if (messages.length > 0) {
       return messages.map(message => {
-          const user = users.filter(user => {
-            return message.id == user.id;
-          })[0];
-          return (
-            <Tweet
-              key={message.id}
-              user={user}
-              message={message}
-              followUser={followUser}
-              unfollowUser={unfollowUser}
-              following={following}
-              loggedUserId={loggedUserId}
-            />
-          );
-        });
+        const user = users.filter(user => {
+          return message.id == user.id;
+        })[0];
+        return (
+          <Tweet
+            key={message.id}
+            user={user}
+            message={message}
+            followUser={followUser}
+            unfollowUser={unfollowUser}
+            following={following}
+            loggedUserId={loggedUserId}
+          />
+        );
+      });
     } else {
-      return <div>{error || 'Um erro ocorreu!'}</div>;
+      return <div>{error || 'Nenhuma mensagem a ser exibida.'}</div>;
     }
   }
 
@@ -97,15 +94,34 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { messages, loading, error, loadingFriends, friendsError, friendsMessages, loadingProfile, profileError, profileMessages } = this.props;
-    console.log(messages);
+    const {
+      messages,
+      loading,
+      error,
+      loadingFriends,
+      friendsError,
+      friendsMessages,
+      loadingProfile,
+      profileError,
+      profileMessages,
+      getDashboardMessages,
+      getProfileMessages,
+      loggedUserId,
+      getFriendsMessages
+    } = this.props;
     return (
       <div>
         <Tabs>
           <TabList>
-            <Tab><h1 className="tab-title">DASHBOARD</h1></Tab>
-            <Tab><h1 className="tab-title">FRIENDS</h1></Tab>
-            <Tab><h1 className="tab-title">PROFILE</h1></Tab>
+            <Tab onClick={() => getDashboardMessages()}>
+              <h1 className="tab-title">DASHBOARD</h1>
+            </Tab>
+            <Tab onClick={() => getFriendsMessages(loggedUserId)}>
+              <h1 className="tab-title">FRIENDS</h1>
+            </Tab>
+            <Tab onClick={() => getProfileMessages(loggedUserId)}>
+              <h1 className="tab-title">PROFILE</h1>
+            </Tab>
           </TabList>
 
           <TabPanel>

@@ -80,7 +80,6 @@ export const followUser = (id, followUser) => {
       }
     })
       .then(response => {
-        console.log(response);
         return response.status !== 204 ? response.json() : {};
       })
       .then(data => {
@@ -106,7 +105,6 @@ export const unfollowUser = (id, unfollowUser) => {
       }
     })
       .then(response => {
-        console.log(response);
         return response.status !== 204 ? response.json() : {};
       })
       .then(data => {

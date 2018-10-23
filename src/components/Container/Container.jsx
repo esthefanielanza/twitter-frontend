@@ -69,7 +69,7 @@ class Container extends Component {
       loadingUsers,
       unfollowUser,
       loadingFriends,
-      loadingProfile,
+      loadingProfile
     } = this.props;
     return (
       <Provider store={store}>
@@ -147,7 +147,9 @@ const mapStateToProps = ({ data }) => ({
   messages: data.messages,
   dashboardError: data.dashboardError,
   friendsError: data.friendsError,
-  profileError: data.profileError
+  profileError: data.profileError,
+  loadingFriends: data.loadingFriends,
+  loadingProfile: data.loadingProfile
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -160,8 +162,8 @@ const mapDispatchToProps = dispatch => ({
   unfollowUser: (id, idUserToUnfollow) => dispatch(unfollowUser(id, idUserToUnfollow)),
   createMessage: (id, message) => dispatch(createMessage(id, message)),
   getDashboardMessages: () => dispatch(getDashboardMessages()),
-  getFriendsMessages: (id) => dispatch(getFriendsMessages(id)),
-  getProfileMessages: (id)=> dispatch(getProfileMessages(id))
+  getFriendsMessages: id => dispatch(getFriendsMessages(id)),
+  getProfileMessages: id => dispatch(getProfileMessages(id))
 });
 
 export default connect(
